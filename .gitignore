@@ -3,6 +3,11 @@
 /public/storage
 /storage/*.key
 /vendor
+/public/fonts
+/public/css
+/public/img
+/public/js
+/public/bower_components
 .env
 .env.backup
 .phpunit.result.cache

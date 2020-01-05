@@ -45,4 +45,10 @@ Route::group(
 
         Route::get('impressum', 'LegalController@imprint')->name('imprint');
         Route::get('datenschutz', 'LegalController@data_protection')->name('data-protection');
+
+        Route::get('company/create', 'CompanyController@create')->name('company-register');
+        Route::post('company/store', 'CompanyController@store')->name('company-store');
+
+        Route::get('company/change', 'CompanyChangeController@index')->name('company-change');
+        Route::get('company/change/{id}', 'CompanyChangeController@change')->name('company-change-id');
     });

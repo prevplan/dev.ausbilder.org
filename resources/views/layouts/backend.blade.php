@@ -64,6 +64,7 @@
             </li>
         </ul>
 
+        {{--
         <!-- SEARCH FORM -->
         <form class="form-inline ml-3">
             <div class="input-group input-group-sm">
@@ -75,9 +76,11 @@
                 </div>
             </div>
         </form>
+        --}}
 
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
+            {{--
             <!-- Messages Dropdown Menu -->
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
@@ -135,15 +138,16 @@
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
                 </div>
-            </li>
+            </li> --}}
             <!-- Notifications Dropdown Menu -->
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
                     <i class="far fa-bell"></i>
-                    <span class="badge badge-warning navbar-badge">15</span>
+                    <span class="badge badge-warning navbar-badge"></span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-header">15 Notifications</span>
+                    <span class="dropdown-header">{{ __('no notifications') }}</span>
+                    {{--
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item">
                         <i class="fas fa-envelope mr-2"></i> 4 new messages
@@ -161,6 +165,7 @@
                     </a>
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                    --}}
                 </div>
             </li>
             <li class="nav-item">
@@ -221,9 +226,10 @@
 
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column nav-legacy nav-flat" data-widget="treeview" role="menu" data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
+                    {{--
                     <li class="nav-item has-treeview menu-open">
                         <a href="#" class="nav-link active">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -247,32 +253,33 @@
                             </li>
                         </ul>
                     </li>
+                     --}}
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
+                        <a href="{{ route('home') }}" class="nav-link {{ (Request::is(LaravelLocalization::getCurrentLocale() . '/home') ? 'active' : '') }}">
+                            <i class="nav-icon fas fa-home"></i>
                             <p>
-                                Simple Link
+                                Home
                                 <span class="right badge badge-danger">New</span>
                             </p>
                         </a>
                     </li>
-                    <li class="nav-item has-treeview {{ (Request::is(LaravelLocalization::getCurrentLocale() . '/trainer*') ? 'menu-open' : '') }}">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-chalkboard-teacher"></i>
-                            <p>
-                                {{ __('trainer') }}
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('trainer.create') }}" class="nav-link {{ (Request::is(LaravelLocalization::getCurrentLocale() . '/trainer/create') ? 'active' : '') }}">
-                                    <i class="fas fa-user-plus"></i>
-                                    <p>{{ __('add trainer') }}</p>
-                                </a>
-                            </li>
-                        </ul>
-                        @if(session('company'))
+                    @if(session('company'))
+                        <li class="nav-item has-treeview {{ (Request::is(LaravelLocalization::getCurrentLocale() . '/trainer*') ? 'menu-open' : '') }}">
+                            <a href="#" class="nav-link {{ (Request::is(LaravelLocalization::getCurrentLocale() . '/trainer*') ? 'active' : '') }}">
+                                <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                                <p>
+                                    {{ __('trainer') }}
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('trainer.create') }}" class="nav-link {{ (Request::is(LaravelLocalization::getCurrentLocale() . '/trainer/create') ? 'active' : '') }}">
+                                        <i class="fas fa-user-plus"></i>
+                                        <p>{{ __('add trainer') }}</p>
+                                    </a>
+                                </li>
+                            </ul>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{ route('trainer.show') }}" class="nav-link {{ (Request::is(LaravelLocalization::getCurrentLocale() . '/trainer') ? 'active' : '') }}">
@@ -281,20 +288,10 @@
                                     </a>
                                 </li>
                             </ul>
-                        @endif
-                        @permission('course-types.edit', session('company_id'))
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('course-types.show') }}" class="nav-link {{ (Request::is(LaravelLocalization::getCurrentLocale() . '/course-types') ? 'active' : '') }}">
-                                    <i class="fas fa-graduation-cap"></i>
-                                    <p>{{ __('course types') }}</p>
-                                </a>
-                            </li>
-                        </ul>
-                        @endpermission
-                    </li>
+                        </li>
+                    @endif
                     <li class="nav-item has-treeview {{ (Request::is(LaravelLocalization::getCurrentLocale() . '/company*') || Request::is(LaravelLocalization::getCurrentLocale() . '/course-types*') ? 'menu-open' : '') }}">
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link {{ (Request::is(LaravelLocalization::getCurrentLocale() . '/company*') || Request::is(LaravelLocalization::getCurrentLocale() . '/course-types*') ? 'active' : '') }}">
                             <i class="nav-icon far fa-building"></i>
                             <p>
                                 {{ __('Company') }}

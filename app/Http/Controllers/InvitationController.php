@@ -21,27 +21,28 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\Invitation;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CompanyChangeController extends Controller
+class InvitationController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('verified');
-    }
-
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param  Company  $company
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
+    public function index(Company $company, $code)
     {
-        $companies = Auth::user()->companies;
+        $invitation = $this->check($company, $code);
 
-        return view('company.change', compact('companies'));
+        if (! $invitation) { // invitation code not found
+            return view('invitation.not-found');
+        } else {
+            return view('invitation.index', compact(['company', 'code']));
+        }
     }
 
     /**
@@ -68,62 +69,41 @@ class CompanyChangeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Invitation  $invitation
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Invitation $invitation)
     {
         //
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Accept the invitation as logged in user.
      *
-     * @param  int  $id
+     * @param  \App\Invitation  $invitation
      * @return \Illuminate\Http\Response
      */
-    public function change(Company $company)
+    public function accept(Company $company, $code)
     {
-        $user = Auth::user();
+        $invitation = $this->check($company, $code);
 
-        $active = $company->users()
-            ->wherePivot('company_active', 1)
-            ->wherePivot('user_active', 1)
-            ->first();
+        abort_unless($invitation, 403); // invitation code not found
 
-        if ($active) { // is active member of this company
-            if ($company->id != $user->last_company) {
-                $user->last_company = $company->id;
-                $user->save();
-            }
+        Auth::user()->companies()->syncWithoutDetaching($company, ['company_active' => 1, 'user_active' => 1]);
 
-            session([
-                'company_id' => $company->id,
-                'company' => $company->name,
-            ]);
+        $invitation->delete(); // delete the invitation
 
-            session()->flash('status', __('company changed'));
-        } else { // NO MEMBER!
-            // TODO write a log entry
-            $user->last_company = false;
-            $user->save();
-            session()->forget('company_id');
-            session()->forget('company');
-            session()->flash('warning', true);
-            session()->flash('status', __('no access to company'));
-        }
-
-        return redirect(route('home'));
+        return redirect()->route('company-change-id', ['company' => $company->id]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Invitation  $invitation
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Invitation $invitation)
     {
         //
     }
@@ -131,11 +111,32 @@ class CompanyChangeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Invitation  $invitation
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Company $company, $code)
     {
-        //
+        $invitation = $this->check($company, $code);
+
+        abort_unless($invitation, 403); // invitation code not found
+
+        $invitation->delete(); // delete the invitation
+
+        return redirect('/');
+    }
+
+    /**
+     * @param  Company  $company
+     * @param $code
+     * @return mixed
+     */
+    private function check(Company $company, $code)
+    {
+        $invitation = Invitation::where([
+            ['company_id', $company->id],
+            ['code', $code],
+        ])->first();
+
+        return $invitation;
     }
 }

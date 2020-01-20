@@ -21,10 +21,14 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\Invitation;
+use App\Mail\TrainerInvite;
+use App\Trainer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
-class CompanyChangeController extends Controller
+class TrainerController extends Controller
 {
     public function __construct()
     {
@@ -34,14 +38,12 @@ class CompanyChangeController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $companies = Auth::user()->companies;
+        $users = Company::find(session('company_id'))->users;
 
-        return view('company.change', compact('companies'));
+        return view('trainer.index', compact('users'));
     }
 
     /**
@@ -51,27 +53,63 @@ class CompanyChangeController extends Controller
      */
     public function create()
     {
-        //
+        return view('trainer.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        //
+        request()->validate([
+            'email' => 'required|email',
+        ]);
+
+        $company = Company::findOrFail(session('company_id'));
+
+        // check if is already a trainer
+        if (in_array($request->email, $company->users()->pluck('email')->toArray())) {
+            return redirect()->route('trainer.show')->with('error', __('already a trainer'));
+        }
+
+        $invited = Invitation::where([
+            ['company_id', $company->id],
+            ['email', $request->email],
+        ])->first();
+
+        if ($invited) { // already invited
+            return redirect()->route('trainer.show')->with('error', __('already invited'));
+        }
+
+        // no actual trainer and not invited, at the moment
+
+        $code = Str::random(20);
+
+        $invitation = Invitation::create(
+            [
+                'company_id' => session('company_id'),
+                'email' => $request->email,
+                'invited_by' => auth()->user()->id,
+                'code' => $code,
+            ]
+        );
+
+        Mail::to($request->email)
+            ->send(new TrainerInvite($company, $code));
+
+        return redirect()->route('trainer.show')->with('message', __('trainer invited'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\trainer  $trainer
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Trainer $trainer)
     {
         //
     }
@@ -79,51 +117,22 @@ class CompanyChangeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\trainer  $trainer
      * @return \Illuminate\Http\Response
      */
-    public function change(Company $company)
+    public function edit(Trainer $trainer)
     {
-        $user = Auth::user();
-
-        $active = $company->users()
-            ->wherePivot('company_active', 1)
-            ->wherePivot('user_active', 1)
-            ->first();
-
-        if ($active) { // is active member of this company
-            if ($company->id != $user->last_company) {
-                $user->last_company = $company->id;
-                $user->save();
-            }
-
-            session([
-                'company_id' => $company->id,
-                'company' => $company->name,
-            ]);
-
-            session()->flash('status', __('company changed'));
-        } else { // NO MEMBER!
-            // TODO write a log entry
-            $user->last_company = false;
-            $user->save();
-            session()->forget('company_id');
-            session()->forget('company');
-            session()->flash('warning', true);
-            session()->flash('status', __('no access to company'));
-        }
-
-        return redirect(route('home'));
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\trainer  $trainer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Trainer $trainer)
     {
         //
     }
@@ -131,10 +140,10 @@ class CompanyChangeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\trainer  $trainer
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Trainer $trainer)
     {
         //
     }

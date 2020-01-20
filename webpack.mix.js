@@ -19,7 +19,6 @@ if (!mix.inProduction()) {
  */
 
 const vendors = 'node_modules/';
-const adminlteplugins = vendors + 'admin-lte/plugins/';
 const resourcesAssets = 'resources/';
 const srcCss = resourcesAssets + 'css/';
 const srcJs = resourcesAssets + 'js/';
@@ -35,18 +34,39 @@ const destImages = dest + 'images/';
 const destVendors = dest + 'vendors/';
 
 const paths = {
-    jquery: adminlteplugins + 'jquery/',
-    bootstrap: adminlteplugins + 'bootstrap/',
+    jquery: vendors + 'jquery/dist/',
+    bootstrap: vendors + 'bootstrap/dist/',
     adminlte: vendors + 'admin-lte/dist/',
     fontawesome: vendors + '@fortawesome/fontawesome-free/',
-    icheck_bootstrap: adminlteplugins + 'icheck-bootstrap/',
+    icheck_bootstrap: vendors + 'icheck-bootstrap/',
+    datatables: vendors + 'datatables.net/',
+    datatablesbs4: vendors + 'datatables.net-bs4/',
 };
 
 // icheck_bootstrap
-mix.copy(
-    paths.icheck_bootstrap + 'icheck-bootstrap.min.css',
-    destVendors + 'icheckbootstrap/css'
+mix.styles(
+    [
+        paths.icheck_bootstrap + 'icheck-bootstrap.min.css'
+    ],
+    destVendors + 'icheckbootstrap/css/icheck-bootstrap.min.css'
 );
+
+//datatables
+mix.combine(
+    [
+        paths.datatables + 'js/jquery.dataTables.js',
+        paths.datatablesbs4 + 'js/dataTables.bootstrap4.js',
+    ],
+    destVendors + 'datatables/js/datatables.js'
+    );
+
+mix.styles(
+    [
+        paths.datatablesbs4 + 'css/dataTables.bootstrap4.css'
+    ],
+    destVendors + 'datatables/css/dataTables.bootstrap4.css'
+);
+
 
 //Copy fonts straight to public
 mix.copy(paths.fontawesome + 'webfonts', destFonts);

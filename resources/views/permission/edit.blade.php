@@ -24,7 +24,7 @@
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('home') }}">ausbilder.org</a></li>
     <li class="breadcrumb-item">{{ __('permission management') }}</li>
-    <li class="breadcrumb-item active">{{ __('overview') }}</li>
+    <li class="breadcrumb-item active">{{ __('edit') }}</li>
 @endsection
 
 @section('css')
@@ -50,6 +50,20 @@
                                 <div class="col-12 col-md-4 m-t-35">
                                     <h5 class="checkbox_header_bottom">{{ __('trainer') }}</h5>
                                     <div class="form-group clearfix">
+                                        <div class="icheck-danger d-inline">
+                                            <input
+                                                    type="checkbox"
+                                                    name="permissions[]"
+                                                    id="checkbox-trainer.add"
+                                                    value="trainer.add"
+                                                    @if ($user->can('trainer.add', session('company_id')))
+                                                        checked
+                                                    @endif
+                                            >
+                                            <label for="checkbox-trainer.add">
+                                                {{ __('add trainer') }}
+                                            </label>
+                                        </div><br />
                                         <div class="icheck-danger d-inline">
                                             @if (Auth::user()->id == $user->id)
                                                 <input type="checkbox" checked disabled>

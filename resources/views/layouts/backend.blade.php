@@ -138,25 +138,45 @@
                         </a>
                     </li>
                     @if(session('company'))
-                        <li class="nav-item has-treeview {{ (Request::is(LaravelLocalization::getCurrentLocale() . '/trainer*') ? 'menu-open' : '') }}">
-                            <a href="#" class="nav-link {{ (Request::is(LaravelLocalization::getCurrentLocale() . '/trainer*') ? 'active' : '') }}">
+                        <li class="nav-item has-treeview
+                            {{
+                                (Request::is(LaravelLocalization::getCurrentLocale() . '/trainer*')
+                                || Request::is(LaravelLocalization::getCurrentLocale() . '/permission*')
+                                ? 'menu-open' : '')
+                            }}
+                            ">
+                            <a href="#" class="nav-link
+                                        {{
+                                            (Request::is(LaravelLocalization::getCurrentLocale() . '/trainer*')
+                                            || Request::is(LaravelLocalization::getCurrentLocale() . '/permission*')
+                                            ? 'active' : '')
+                                        }}
+                                    ">
                                 <i class="nav-icon fas fa-chalkboard-teacher"></i>
                                 <p>
                                     {{ __('trainer') }}
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
+                            @permission('trainer.add', session('company_id'))
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ route('trainer.create') }}" class="nav-link {{ (Request::is(LaravelLocalization::getCurrentLocale() . '/trainer/create') ? 'active' : '') }}">
+                                            <i class="fas fa-user-plus"></i>
+                                            <p>{{ __('add trainer') }}</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            @endpermission
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('trainer.create') }}" class="nav-link {{ (Request::is(LaravelLocalization::getCurrentLocale() . '/trainer/create') ? 'active' : '') }}">
-                                        <i class="fas fa-user-plus"></i>
-                                        <p>{{ __('add trainer') }}</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('trainer.show') }}" class="nav-link {{ (Request::is(LaravelLocalization::getCurrentLocale() . '/trainer') ? 'active' : '') }}">
+                                    <a href="{{ route('trainer.show') }}" class="nav-link
+                                        {{
+                                            (Request::is(LaravelLocalization::getCurrentLocale() . '/trainer')
+                                            || Request::is(LaravelLocalization::getCurrentLocale() . '/permission*')
+                                            ? 'active' : '')
+                                        }}
+                                        ">
                                         <i class="fas fa-users"></i>
                                         <p>{{ __('trainer') }}</p>
                                     </a>

@@ -78,4 +78,9 @@ Route::group(
 
         Route::get('permission/{user}/edit', 'PermissionController@edit')->name('permission.edit');
         Route::patch('permission/{user}', 'PermissionController@update')->name('permission.update');
+
+        Route::get('course/create', 'CourseController@create')->name('course.create');
+        Route::post('course', 'CourseController@store')->name('course.store');
+        Route::get('course', 'CourseController@index')->name('course.overview');
+        Route::get('course/{course}/show', 'CourseController@show')->name('course.show');
     });

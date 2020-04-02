@@ -6,12 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Mtvs\EloquentHashids\HasHashid;
 use Mtvs\EloquentHashids\HashidRouting;
 
-class CourseType extends Model
+class Signature extends Model
 {
     use HasHashid, HashidRouting;
 
-    public function companies()
-    {
-        return $this->belongsToMany(Company::class);
-    }
+    protected $fillable = ['course_id', 'participant_id', 'courseDay_id', 'sign'];
 }

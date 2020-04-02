@@ -17,6 +17,9 @@ class CourseTypesSeeder extends Seeder
             'name' => 'first-aid-basic-course_ta',
             'slug' => 'bg-gk',
             'group' => 'first-aid-courses',
+            'lessons' => 9,
+            'lessons_per_day' => 9,
+            'seats' => 20,
         ]);
 
         CourseType::create([
@@ -24,6 +27,9 @@ class CourseTypesSeeder extends Seeder
             'name' => 'first-aid-training_ta',
             'slug' => 'bg-fb',
             'group' => 'first-aid-courses',
+            'lessons' => 9,
+            'lessons_per_day' => 9,
+            'seats' => 20,
         ]);
 
         CourseType::create([
@@ -31,6 +37,9 @@ class CourseTypesSeeder extends Seeder
             'name' => 'first_aid_training_in_educational_and_care_facilities_for_children_ta',
             'slug' => 'bg-bbek',
             'group' => 'first-aid-courses',
+            'lessons' => 9,
+            'lessons_per_day' => 9,
+            'seats' => 20,
         ]);
 
         CourseType::create([
@@ -38,6 +47,9 @@ class CourseTypesSeeder extends Seeder
             'name' => 'company_paramedic-basic-course_ta',
             'slug' => 'bs-gl',
             'group' => 'company_paramedic',
+            'lessons' => 63,
+            'lessons_per_day' => 9,
+            'seats' => 20,
         ]);
 
         CourseType::create([
@@ -45,6 +57,9 @@ class CourseTypesSeeder extends Seeder
             'name' => 'company_paramedic-advanced-training-course_ta',
             'slug' => 'bs-al',
             'group' => 'company_paramedic',
+            'lessons' => 32,
+            'lessons_per_day' => 9,
+            'seats' => 20,
         ]);
 
         CourseType::create([
@@ -52,6 +67,9 @@ class CourseTypesSeeder extends Seeder
             'name' => 'company_paramedic-training_ta',
             'slug' => 'bs-fb',
             'group' => 'company_paramedic',
+            'lessons' => 16,
+            'lessons_per_day' => 9,
+            'seats' => 20,
         ]);
 
         CourseType::create([
@@ -59,6 +77,9 @@ class CourseTypesSeeder extends Seeder
             'name' => 'first-aid-teacher-training_ta',
             'slug' => 'eh-lka',
             'group' => 'teachers',
+            'lessons' => 56,
+            'lessons_per_day' => 9,
+            'seats' => 20,
         ]);
 
         CourseType::create([
@@ -66,6 +87,9 @@ class CourseTypesSeeder extends Seeder
             'name' => 'first-aid-teacher-advanced-training_ta',
             'slug' => 'eh-lkf',
             'group' => 'teachers',
+            'lessons' => 16,
+            'lessons_per_day' => 9,
+            'seats' => 20,
         ]);
     }
 }

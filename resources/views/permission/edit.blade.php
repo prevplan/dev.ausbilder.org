@@ -116,6 +116,20 @@
                                                 {{ __('edit company') }}
                                             </label>
                                         </div><br />
+                                        <div class="icheck-warning d-inline">
+                                            <input
+                                                    type="checkbox"
+                                                    name="permissions[]"
+                                                    id="checkbox-templates.edit"
+                                                    value="templates.edit"
+                                                    @if ($user->can('templates.edit', session('company_id')))
+                                                        checked
+                                                    @endif
+                                            >
+                                            <label for="checkbox-templates.edit">
+                                                {{ __('edit templates') }}
+                                            </label>
+                                        </div><br />
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-4 m-t-35">

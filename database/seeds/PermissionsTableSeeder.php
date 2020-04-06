@@ -32,6 +32,12 @@ class PermissionsTableSeeder extends Seeder
         ]);
 
         Permission::create([
+            'name' => 'templates.edit',
+            'display_name' => 'edit templates',
+            'description' => 'can edit templates',
+        ]);
+
+        Permission::create([
             'name' => 'trainer.add',
             'display_name' => 'add new trainer',
             'description' => 'can add new trainer',

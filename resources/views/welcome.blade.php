@@ -64,10 +64,14 @@
                 <div class="card card-danger card-outline">
                     <div class="card-body">
                         <p class="card-text" align="center">
-                            {!! html_entity_decode( __('Under :url is a demo area available.', ['url' => '<a href="https://dev.ausbilder.org">https://dev.ausbilder.org</a>']) ) !!}
+                            {{ __('Dies ist eine Testumgebung. Hier kann mit dem Benutzer test@test.fail und dem Passwort 123456 frei getestet werden.') }}
                         </p>
                         <p class="card-text" align="center">
-                            {{ __('Please use the demo area instead of this site for testing purposes.') }}
+                            {{ __('Die Datenbank wird regelmäßig zurückgesetzt und alle Daten gelöscht.') }}
+                        </p>
+
+                        <p class="card-text" align="center">
+                            {!! html_entity_decode( __('Unter :url findet sich die live Version, welche nicht zurückgesetzt wird.', ['url' => '<a href="https://ausbilder.org">https://ausbilder.org</a>']) ) !!}
                         </p>
                     </div>
                 </div><!-- /.card -->

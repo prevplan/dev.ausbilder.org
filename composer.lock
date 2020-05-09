@@ -60,16 +60,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.137.4",
+            "version": "3.137.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "0bed146e6336ca1260e937fce2f4931681ceb3ce"
+                "reference": "24cdfb2d9538a2a30744708d75be1e75f302283b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0bed146e6336ca1260e937fce2f4931681ceb3ce",
-                "reference": "0bed146e6336ca1260e937fce2f4931681ceb3ce",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/24cdfb2d9538a2a30744708d75be1e75f302283b",
+                "reference": "24cdfb2d9538a2a30744708d75be1e75f302283b",
                 "shasum": ""
             },
             "require": {
@@ -140,7 +140,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2020-05-06T18:19:09+00:00"
+            "time": "2020-05-08T18:20:12+00:00"
         },
         {
             "name": "brick/math",
@@ -2352,16 +2352,16 @@
         },
         {
             "name": "santigarcor/laratrust",
-            "version": "6.0.0",
+            "version": "6.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/santigarcor/laratrust.git",
-                "reference": "20ae3433cd83b13eb48818a08b295cecd15b1619"
+                "reference": "199e85b9707ff3e6a85b2fc96fff960d958d912e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/santigarcor/laratrust/zipball/20ae3433cd83b13eb48818a08b295cecd15b1619",
-                "reference": "20ae3433cd83b13eb48818a08b295cecd15b1619",
+                "url": "https://api.github.com/repos/santigarcor/laratrust/zipball/199e85b9707ff3e6a85b2fc96fff960d958d912e",
+                "reference": "199e85b9707ff3e6a85b2fc96fff960d958d912e",
                 "shasum": ""
             },
             "require": {
@@ -2413,7 +2413,7 @@
                 "rbac",
                 "roles"
             ],
-            "time": "2020-05-06T22:42:05+00:00"
+            "time": "2020-05-07T13:38:41+00:00"
         },
         {
             "name": "spatie/laravel-honeypot",

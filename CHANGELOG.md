@@ -1,6 +1,6 @@
 # Changelog
 
-[0.2.0]
+[0.2]
 ### Bugfix
 - replaces */* with *-* in the internal number
 - *Registration Link* linked
@@ -23,5 +23,5 @@
 ### Bugfix
 - corrected FeV paragraph
 
-[0.2.0]: https://github.com/prevplan/ausbilder.org/compare/v0.1.1...v0.2.0
+[0.2]: https://github.com/prevplan/ausbilder.org/compare/v0.1.1...v0.2
 [0.1.1]: https://github.com/prevplan/ausbilder.org/compare/v0.1...v0.1.1

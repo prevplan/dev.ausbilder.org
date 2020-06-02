@@ -71,6 +71,7 @@
                                             {{ $trainer->name }}{!! !$loop->last ? ',<br />' : '' !!}
                                         @endforeach
                                     </td>
+                                    <td>{{ $course->responsibility->name }}</td>
                                     <td><a href="{{ route('course.show', ['course' => $course->hashid()]) }}" style="text-decoration: none; color: inherit;"><i class="far fa-eye"></i></a></td>
                                 </tr>
                             @endforeach

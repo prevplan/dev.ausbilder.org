@@ -101,6 +101,18 @@ Route::group(
 
         Route::get('api/regenerate', 'ApiController@regenerate')->name('api.regenerate');
 
+        Route::get('price/create', 'PriceController@create')->name('price.create');
+        Route::get('price', 'PriceController@index')->name('price.overview');
+        Route::post('price', 'PriceController@store')->name('price.store');
+
+        Route::get('participant/{course}/create', 'ParticipantController@create')->name('participant.create');
+        Route::post('participant/{course}', 'ParticipantController@store')->name('participant.store');
+
+        Route::get('booking/{company}/loc/{location}', 'BookingController@location')->name('booking.location');
+        Route::get('booking/{company}/sloc/{location}', 'BookingController@seminarLocation')->name('booking.seminarLocation');
+        Route::get('booking/{company}/{course}', 'BookingController@create')->name('booking.create');
+        Route::post('booking/{company}/{course}', 'BookingController@store')->name('booking.store')->middleware(ProtectAgainstSpam::class);
+
         Route::group(['middleware' => 'revalidate'], function () {
             Route::get('event', 'EventController@index')->name('event.index');
             Route::post('event', 'EventController@search')->name('event.search')->middleware(ProtectAgainstSpam::class);

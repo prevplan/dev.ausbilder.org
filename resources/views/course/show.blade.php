@@ -41,6 +41,7 @@
                         </div>
 
                         @include('layouts.error')
+                        @include('layouts.status')
                         <!-- /.card-header -->
 
                         <div class="card-body">
@@ -130,6 +131,10 @@
                                     <label for="inputRegistrationNumber">{{ __('QSEH registration number') }}</label>
                                     <div>{{ ($course->registration_number ? $course->registration_number : __('not specified') ) }}</div>
                                 </div>
+                                <div class="form-group col-md">
+                                    <label>{{ __('seats') }}</label>
+                                    <div>{{ count($course->participants) }} / {{ $course->seats }}</div>
+                                </div>
                                 @if(
                                     \Carbon\Carbon::now()->addHour() >= $course->start
                                     && \Carbon\Carbon::now() < $course->end
@@ -152,6 +157,38 @@
                                     </div>
                                 @endif
                             </div>
+                            @if(\Carbon\Carbon::now() < $course->end && count($course->participants) < $course->seats && $course->bookable)
+                                <div class="row">
+                                    <div class="form-group col-md">
+                                        <label>{{ __('free seats') }}</label>
+                                        <div>{{ $course->seats - count($course->participants) }}</div>
+                                    </div>
+                                    <div class="form-group col-md">
+                                        <label></label>
+                                        <div>
+                                            <a href="{{ route('booking.seminarLocation',
+                                                [
+                                                    'company' => \Vinkla\Hashids\Facades\Hashids::encode(session('company_id')),
+                                                    'location' => $course->seminar_location
+                                                ]) }}" target="_blank">
+                                                <i class="fas fa-map-marker"></i>
+                                            </a>
+                                            &nbsp;
+                                            <a href="{{ route('booking.location',
+                                                [
+                                                    'company' => \Vinkla\Hashids\Facades\Hashids::encode(session('company_id')),
+                                                    'location' => $course->location
+                                                ]) }}" target="_blank">
+                                                <i class="fas fa-location-arrow"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg">
+                                        <label>{{ __('participant') }}</label>
+                                        <div><a href="{{ route('participant.create', ['course' => $course]) }}">{{ __('add participant') }}</a></div>
+                                    </div>
+                                </div>
+                            @endif
                             @if($course->running)
                                 <div class="row">
                                     <div class="form-group col-lg">
@@ -159,7 +196,7 @@
                                         <div>{{ $course->internal_number }}</div>
                                     </div>
                                     <div class="form-group col-lg">
-                                        <label for="inputZipcode">{{ __('Code') }}</label>
+                                        <label for="inputZipcode">{{ __('code') }}</label>
                                         <div>{{ \Vinkla\Hashids\Facades\Hashids::encode($course->running) }}</div>
                                     </div>
                                     <div class="form-group col-lg">

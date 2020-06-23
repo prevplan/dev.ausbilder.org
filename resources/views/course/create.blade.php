@@ -169,21 +169,21 @@
                                             @if( Auth::user()->isAbleTo('course.register', session('company_id')) && $company->qseh_password)
                                                 {{ __('- automatically register at QSEH?') }} &nbsp;
                                                 <input
-                                                    type="checkbox"
-                                                    name="auto_register"
-                                                    id="reg_nr_hide"
-                                                    onchange="hideReg()"
                                                     data-bootstrap-switch
-                                                    data-on-text="{{ __('Yes') }}"
-                                                    data-off-text="{{ __('No') }}"
                                                     data-off-color="danger"
+                                                    data-off-text="{{ __('No') }}"
                                                     data-on-color="success"
+                                                    data-on-text="{{ __('Yes') }}"
+                                                    id="reg_nr_hide"
+                                                    name="auto_register"
+                                                    onchange="hideReg()"
+                                                    type="checkbox"
                                                 >
-                                                <div id="reg_nr_hint" style="display:none">
+                                                <div id="reg_nr_hint" style="{{ old('auto_register') ? 'display:block' : 'display:none' }}">
                                                     {{ __('The course will be automatically registered at the QSEH.') }}
                                                 </div>
                                             @endif
-                                        <div id="reg_nr_field" style="display:block">
+                                        <div id="reg_nr_field" style="{{ old('auto_register') ? 'display:none' : 'display:block' }}">
                                             <input
                                                 type="text"
                                                 class="form-control"
@@ -193,6 +193,73 @@
                                                 placeholder="123456/{{ \Carbon\Carbon::now()->format('Y') }}"
                                             >
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-2">
+                                        <label for="inputBookable">{{ __('bookable') }}</label>
+                                        <div>
+                                            <input
+                                                    {{ (!count($prices) ? 'disabled' : '') }}
+                                                    data-bootstrap-switch
+                                                    data-off-color="danger"
+                                                    data-off-text="{{ __('No') }}"
+                                                    data-on-color="success"
+                                                    data-on-text="{{ __('Yes') }}"
+                                                    id="price_hide"
+                                                    name="bookable"
+                                                    onchange="hidePrice()"
+                                                    type="checkbox"
+                                            >
+                                        </div>
+                                    </div>
+                                    @if(count($prices))
+                                        <div class="col-2" id="seats" style="{{ $errors->any() && !old('bookable') ? 'display:none' : 'display:block' }}">
+                                            <div class="form-group">
+                                                <label for="inputMaxSeats">{{ __('maximum seats') }}</label>
+                                                <input class="form-control" id="inputMaxSeats" name="max_seats"
+                                                       placeholder="{{ __('maximum seats') }}"
+                                                       required
+                                                       type="number"
+                                                       value="{{ old('max_seats') ?? '20'}}">
+                                            </div>
+                                        </div>
+                                        <div class="col-6" id="prices" style="{{ $errors->any() && !old('bookable') ? 'display:none' : 'display:block' }}">
+                                            <div class="form-group" id="price_table">
+                                                <label class="col-6">{{ __('price') }}</label>
+                                                @if( null !== old('price') )
+                                                    @foreach( old('price')  as $price)
+                                                        <div>
+                                                            <select class="custom-select col-6" name="price[]">
+                                                                <option disabled selected>{{ __('select price') }}</option>
+                                                                @foreach ($prices as $price)
+                                                                    <option {{ (old('price')[$loop->parent->index] == $price->id ? 'selected' : '') }} value="{{ $price->id }}">{{ __($price->title) }} - {{ $price->price }} {{ $price->currency }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            @if( $loop->first )
+                                                                <button class="btn btn-success btn-sm add-price" name="add-price"
+                                                                        type="button"><i class="fas fa-plus"></i></button>
+                                                            @else
+                                                                <button class="btn btn-danger btn-sm remove" name="remove"
+                                                                        type="button"><i class="fas fa-minus"></i></button>
+                                                            @endif
+                                                        </div>
+                                                    @endforeach
+                                                @else
+                                                    <select class="custom-select col-6" name="price[]">
+                                                        <option disabled selected>{{ __('select price') }}</option>
+                                                        @foreach ($prices as $price)
+                                                            <option value="{{ $price->id }}">{{ __($price->title) }} - {{ $price->price }} {{ $price->currency }}</option>
+                                                        @endforeach
+                                                    </select>
+
+                                                    <button class="btn btn-success btn-sm add-price" name="add-price"
+                                                            type="button"><i class="fas fa-plus"></i></button>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endif
+                                    <div class="form-group col-lg">
                                     </div>
                                 </div>
                             </div>
@@ -247,6 +314,33 @@
         });
     </script>
 
+    <script>
+        $(document).ready(function(){
+
+            $(document).on('click', '.add-price', function(){
+                var html = '';
+
+                html += '<div>';
+                html += '<select class="custom-select col-6" name="price[]" required>';
+                html += '<option selected disabled>{{ __('select price') }}</option>';
+                @foreach ($prices as $price)
+                    html += '<option value="{{ $price->id }}">{{ __($price->title) }} - {{ $price->price }} {{ $price->currency }}</option>';
+                @endforeach
+                html += '</select>';
+                html += ' <button type="button" name="remove" class="btn btn-danger btn-sm remove"><i class="fas fa-minus"></i></button>';
+                html += '</div>';
+
+                $('#price_table').append(html);
+
+            });
+
+            $(document).on('click', '.remove', function(){
+                $(this).closest('div').remove();
+            });
+
+        });
+    </script>
+
     <!-- Bootstrap Switch -->
     <script src="{{ asset('vendors/bootstrap-switch/js/switch.js') }}"></script>
 
@@ -257,19 +351,59 @@
             });
 
         })
+
+        @if(old('auto_register'))
+            $("[name='auto_register']").bootstrapSwitch('state',true)();
+        @else
+            $("[name='auto_register']").bootstrapSwitch('state',false)();
+        @endif
+
+    </script>
+
+    <script>
+        $(function () {
+            $("input[data-bootstrap-switch]").each(function(){
+                $(this).bootstrapSwitch('state', $(this).prop('unchecked'));
+            });
+
+        })
+
+        @if($errors->any() && !old('bookable'))
+            $("[name='bookable']").bootstrapSwitch('state',false)();
+        @else
+            $("[name='bookable']").bootstrapSwitch('state',true)();
+        @endif
+
     </script>
 
     <script>
         function hideReg() {
             var checkBox = document.getElementById("reg_nr_hide");
             var text = document.getElementById("reg_nr_field");
-            if (checkBox.checked == true){
+            if (checkBox.checked === true){
                 text.style.display = "none";
             } else {
                 text.style.display = "block";
             }
             var text = document.getElementById("reg_nr_hint");
-            if (checkBox.checked == true){
+            if (checkBox.checked === true){
+                text.style.display = "block";
+            } else {
+                text.style.display = "none";
+            }
+        }
+
+        function hidePrice() {
+            var checkBox = document.getElementById("price_hide");
+            var text = document.getElementById("prices");
+            if (checkBox.checked === true){
+                text.style.display = "block";
+            } else {
+                text.style.display = "none";
+            }
+
+            var text = document.getElementById("seats");
+            if (checkBox.checked === true){
                 text.style.display = "block";
             } else {
                 text.style.display = "none";
@@ -279,7 +413,7 @@
         function hideFunc() {
             var checkBox = document.getElementById("hide");
             var text = document.getElementById("default_company");
-            if (checkBox.checked == true){
+            if (checkBox.checked === true){
                 text.style.display = "block";
             } else {
                 text.style.display = "none";

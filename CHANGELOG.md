@@ -2,6 +2,10 @@
 
 [Unreleased]
 
+[0.3.2]
+### Bugfix
+- don't show inactive trainer
+
 [0.3.1]
 ### Added
 - Added a function to generate an internal number
@@ -42,7 +46,8 @@
 ### Bugfix
 - corrected FeV paragraph
 
-[Unreleased]: https://github.com/prevplan/ausbilder.org/compare/v0.3.1...master
+[Unreleased]: https://github.com/prevplan/ausbilder.org/compare/v0.3.2...master
+[0.3.2]: https://github.com/prevplan/ausbilder.org/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/prevplan/ausbilder.org/compare/v0.3.0...v0.3.1
 [0.3]: https://github.com/prevplan/ausbilder.org/compare/v0.2.1...v0.3
 [0.2.1]: https://github.com/prevplan/ausbilder.org/compare/v0.2...v0.2.1

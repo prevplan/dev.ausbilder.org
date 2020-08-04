@@ -60,7 +60,7 @@
                             <tbody>
                             @foreach($courses as $course)
                                 <tr>
-                                    <td>{{ \Carbon\Carbon::parse($course->start)->formatLocalized('%a, %d %b %Y %H:%M') }} Uhr</td>
+                                    <td>{{ \Carbon\Carbon::parse($course->start)->formatLocalized('%a, %d. %b %Y %H:%M') }} Uhr</td>
                                     <td>{{ __($course['course_types'][0]['name']) }}</td>
                                     <td>{{ $course->street }}</td>
                                     <td>{{ $course->zipcode }} {{ $course->location }}</td>

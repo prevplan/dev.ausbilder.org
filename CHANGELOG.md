@@ -1,6 +1,8 @@
 # Changelog
 
 [Unreleased]
+
+[0.3.3]
 ### Changed
 Showing the name of the day of the week, in the booking overview
 
@@ -48,7 +50,8 @@ Showing the name of the day of the week, in the booking overview
 ### Bugfix
 - corrected FeV paragraph
 
-[Unreleased]: https://github.com/prevplan/ausbilder.org/compare/v0.3.2...master
+[Unreleased]: https://github.com/prevplan/ausbilder.org/compare/v0.3.3...master
+[0.3.3]: https://github.com/prevplan/ausbilder.org/compare/v0.3.2...v0.3.3
 [0.3.2]: https://github.com/prevplan/ausbilder.org/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/prevplan/ausbilder.org/compare/v0.3.0...v0.3.1
 [0.3]: https://github.com/prevplan/ausbilder.org/compare/v0.2.1...v0.3

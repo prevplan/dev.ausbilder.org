@@ -1,6 +1,8 @@
 # Changelog
 
 [Unreleased]
+### Changed
+Showing the name of the day of the week, in the booking overview
 
 [0.3.2]
 ### Bugfix
